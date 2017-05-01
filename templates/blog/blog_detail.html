@@ -1,0 +1,91 @@
+{% extends "blog/base_blog.html" %}
+{% load blog_tag %}
+
+{% block title %}
+  Article details
+{% endblock %}
+
+{%block navi%}
+  <a href="/">Back to Homepage!</a>
+  <br />
+  <a href="/new_post">Create new post.</a>
+{% endblock %}
+    <br />
+{% block content %}
+  <h2>Detailed view for a blog article</h2>
+  <p>
+      Author
+      <ul>
+          {% for author in post.author.all %}
+            <li>{{ author.email }}</li>
+          {% endfor %}
+      </ul>
+</p>
+  <p>
+     Title:
+        <ul>
+            <li>{{ post.title }}</li>
+        </ul>
+  </p>
+  <p>
+      Content:
+
+  </p>
+  <p>
+      <ul>
+          {% autoescape off %}
+          <li>{{ post.content|markdown }}</li>
+          {% endautoescape %}
+      </ul>
+  </p>
+  <p>
+      Comments:
+  </p>
+  <p>
+      <ul>
+      {% for comment in post.comments.all %}
+        <li> {{ comment.author.email }} - {{ comment.content }} </li>
+      {% endfor %}
+  </ul>
+  </p>
+  <p>
+      Tags
+      <ul>
+      {% for tag in post.tag.all %}
+        <li> {{ tag.name }}</li>
+      {% endfor %}
+  </ul>
+  </p>
+  {% if request.user.is_anonymous == True %}
+    <h3>Must be logged in to Comment or add Tag</h3><a href="/login/?next=/post/{{ post.id }}">    Login.</a>
+  {% else %}
+    <p>
+        Add content:
+    </p>
+    <form method="POST" action=# name="content">
+        {% csrf_token %}
+        {{ form_content.as_p }}
+        <button type="Submit">AddContent</button>
+    </form>
+    <p>
+        Add tags:
+    </p>
+    <form method="POST" action="#" name="tag">
+        {% csrf_token %}
+        {{ form_tags.as_p }}
+        <button type="Submit">AddTag</button>
+    </form>
+    <p>
+        Add comment:
+    </p>
+    <form method="POST" action="#" name="comment">
+        {% csrf_token %}
+        {{ form_comment.as_p }}
+        <input type="hidden" name="author_id" value="{{ request.user }}"/>
+        <button type="Submit">AddComment</button>  </form>
+  {% endif %}
+{% endblock %}
+
+{%block footer %}
+  Copyright Don Koci. Article detail 2017.!
+{% endblock %}

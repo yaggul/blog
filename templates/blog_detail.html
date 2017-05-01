@@ -1,0 +1,68 @@
+{% extends "blog/base_blog.html" %}
+
+{% block title %}
+  Article details
+{% endblock %}
+
+{%block navi%}
+  <a href="/">Back to Homepage!</a>
+  <br />
+  <a href="/new_post">Create new post.</a>
+{% endblock %}
+    <br />
+{% block content %}
+  <h2>Detailed view for a blog article</h2>
+  <p>
+     Title:
+        <ul>
+            <li>{{ post.title }}</li>
+        </ul>
+  </p>
+  <p>
+      Content:
+
+  </p>
+  <p>
+      <ul>
+          <li>{{ post.content }}</li>
+      </ul>
+  </p>
+  <p>
+      Comments:
+  </p>
+  <p>
+      <ul>
+      {% for comment in post_comments%}
+        <li> {{ comment.author_email }} - {{ comment.content }} </li>
+      {% endfor %}
+  </ul>
+  </p>
+  <p>
+      Tags
+      <ul>
+      {% for tag in post_tags %}
+        <li> {{ tag.name }}</li>
+      {% endfor %}
+  </ul>
+  </p>
+  <p>
+      Add tags:
+  </p>
+  <form method="POST" action="#" name="tag">
+      {% csrf_token %}
+      {{ form_tags.as_p }}
+      <button type="Submit">AddTag</button>
+  </form>
+  <p>
+      Add comment:
+  </p>
+  <form method="POST" action="#" name="comment">
+      {% csrf_token %}
+      {{ form_comment.as_p }}
+      <button type="Submit">AddComment</button>
+  </form>
+{% endblock %}
+
+{%block footer %}
+  Copyright Don Koci. Article detail 2017.!
+{% endblock %}

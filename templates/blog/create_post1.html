@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Bootstrap 3, from LayoutIt!</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/style.css' %}" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="navbar-header">
+
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button> <a class="navbar-brand" href="/">DJ Blog</a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active">
+							<a>{{ request.user }}</a>
+						</li>
+					</ul>
+					</form>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="/logout">Logout</a>
+						</li>
+					</ul>
+				</div>
+
+			</nav>
+			<form role="form" action="#" method="POST">
+                {% csrf_token %}
+				<div class="form-group">
+
+					<label for="title">
+						Title
+					</label>
+                    {{ form.title }}
+					{# <input type="text" class="form-control" id="title">#}
+				</div>
+                <div class="form-group">
+
+                    <label for="content">
+                        Content
+                    </label>
+                    {{ form.content }}
+                    {# <textarea class="form-control" rows="5" id="content"></textarea>#}
+                </div>
+				<div class="form-group">
+
+					<label for="tags">
+						Tags
+					</label>
+                    {{ form.tags }}
+					{# <input type="test" class="form-control" id="tags">#}
+				</div>
+				<button type="submit" class="btn btn-default">
+					AddPost
+				</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+    <script src="{% static 'blog/js/jquery.min.js' %}"></script>
+    <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'blog/js/scripts.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,107 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, minimum-scale=1">
+
+    <title>Bootstrap 3, from LayoutIt!</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/style.css' %}" rel="stylesheet">
+
+
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="navbar-header">
+
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button> <a class="navbar-brand" href="/">DJ BLOG</a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+                        {% if request.user.is_anonymous == True %}
+                            <li>
+                                <a>{{ request.user.username }}</a>
+                            </li>
+                        {% else %}
+                            <li class="active">
+                                <a>{{ request.user }}</a>
+						    </li>
+                        {% endif %}
+						<li>
+							<a href="/new_post">Create new Post</a>
+						</li>
+                        {% if request.user.is_anonymous == True %}
+                            <li>
+                                <a href="/register">Register new user</a>
+						    </li>
+						    <li>
+							    <a href="/login">Login</a>
+						    </li>
+                        {% endif %}
+
+                    </ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="/logout">Logout</a>
+						</li>
+					</ul>
+				</div>
+
+			</nav>
+            <div class="blog_post">
+                {% for post in posts  %}
+                    <h2>
+                        {{ post.title }}
+                    </h2>
+                    <p id="hideOverflow">
+                        {{ post.content }}
+                    </p>
+                    <p>
+                        <a class="btn" href="{% url 'blog:views-post-detail' post_id=post.id %}">View details »</a>
+                    </p>
+                {% endfor %}
+            </div>
+            {% if posts.has_other_pages %}
+                <ul class="pagination">
+                    {% if posts.has_previous %}
+                        <li><a href="?page={{ posts.previous_page_number }}">Prev</a></li>
+                    {% else %}
+                        <li class="disabled"><span>Prev</span></li>
+                    {% endif %}
+                    {% for i in posts.paginator.page_range %}
+                        {% if posts.number == i  %}
+                            <li class="active"><span>{{ i }}<span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if posts.has_next %}
+                        <li><a href="?page={{ posts.next_page_number }}">Next</a></li>
+                    {% else %}
+                        <li class="disabled"><span>Next</span></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+		</div>
+	</div>
+</div>
+
+    <script src="{% static 'blog/js/jquery.min.js' %}"></script>
+    <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'blog/js/scripts.js' %}"></script>
+  </body>
+</html>

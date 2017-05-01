@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      {% block title %}
+      {% endblock %}
+    </title>
+
+    {% block head %}
+    {% endblock %}
+
+    <style>
+        {% block style %}
+        {% endblock %}
+    </style>
+  </head>
+  <body>
+    <p>
+        {% if request.user.is_anonymous == True %}
+            {{ request.user.username }}
+        {% else %}
+            {{ request.user }}<a href="/logout">   Logout</a>
+        {% endif %}
+    </p>
+    {% block navi %}
+    {% endblock %}
+    <h3>django test bloger</h3>
+    <h1>Welcome to blog</h1>
+    <p>
+
+    </p>
+    {% block content %}
+    {% endblock %}
+    <p>
+
+    </p>
+    <footer>
+      {% block footer %}
+      {% endblock %}
+    </footer>
+  </body>
+</html>

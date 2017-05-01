@@ -1,0 +1,170 @@
+{% load static %}
+{% load blog_tag %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, minimum-scale=1">
+
+    <title>Bootstrap 3, from LayoutIt!</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/style.css' %}" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			{# <nav class="navbar navbar-default navbar-fixed-top" role="navigation">#}
+            <nav class="navbar navbar-default" role="navigation">
+
+				<div class="navbar-header">
+
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button> <a class="navbar-brand" href="/">DJ BLOG</a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+                        {% if request.user.is_anonymous == True %}
+                            <li>
+                                <a>{{ request.user.username }}</a>
+                            </li>
+                        {% else %}
+                            <li class="active">
+                                <a>{{ request.user }}</a>
+						    </li>
+                        {% endif %}
+                        <li>
+                            <a href="/new_post">Create new Post</a>
+                        </li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="/logout">Logout</a>
+						</li>
+					</ul>
+				</div>
+
+			</nav>
+			<div class="page-header">
+				<h1>
+					{{ post.title }}
+                    <small>
+                    <p>
+                        Authors
+                    </p>
+                    <ul style="list-style:none;">
+                        {% for author in post.author.all %}
+                            <li>{{ author.email }}</li>
+                        {% endfor %}
+                    </ul>
+                    </small>
+				</h1>
+			</div>
+			<div class="col-md-12" id="scrollOverflow">
+                {% autoescape off %}
+                {{ post.content|markdown }}
+                {% endautoescape %}
+			</div>
+            <div class="col-md-12">
+                {% if post.comments.all.count == 0 %}
+
+                {% else %}
+                    <h3>Comments:</h3>
+                {% endif %}
+                {% for comment in post.comments.all %}
+			        <blockquote>
+			    	    <p>
+                            {{ comment.content }}
+			    	    </p>
+                        <small>{{ comment.author.all.0.email }}</small>
+			        </blockquote>
+                {% endfor %}
+            </div>
+            <div class="col-md-12">
+                {% if post.tag.all.count == 0 %}
+
+                {% else %}
+                    <h4>Tags:</h4>
+                {% endif %}
+                {% for tag in post.tag.all %}
+                    <ul id="post_tags">
+                        <li><small>{{ tag.name }}</small></li>
+                    </ul>
+                {% endfor %}
+            </div>
+		</div>
+	</div>
+    {% if request.user.is_anonymous == True %}
+    <h3>Must be logged in to Comment or add Tag</h3>
+    <h4><a href="/login/?next=/post/{{ post.id }}">Login.</a></h4>
+    {% else %}
+	<div class="row">
+		<div class="col-md-12" style="padding: 10px;margin-top:10px;">
+            <fieldset>
+                    <legend>
+                        Add content
+                    </legend>
+			<form role="form" name="content" method="POST" action="#">
+                    {% csrf_token %}
+				    <div class="form-group">
+                            {{ form_content.as_p }}
+				    </div>
+				    <button type="submit" class="btn btn-default">
+					    Add content
+				    </button>
+			</form>
+        </fieldset>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6" style="padding: 10px; margin-top:10px;">
+            <fieldset>
+                    <legend>
+                        Add comment
+                    </legend>
+			<form role="form" name="comment" method="POST" action="#">
+                {% csrf_token %}
+                <div class="form-group">
+					{{ form_comment.as_p}}
+				</div>
+				<button type="submit" class="btn btn-default">
+					Add comment
+				</button>
+			</form>
+            </fieldset>
+		</div>
+		<div class="col-md-6" style="padding: 10px; margin-top:10px;">
+            <fieldset>
+                    <legend>
+                        Add tag
+                    </legend>
+            <form role="form" name="tag" method="POST" action="#">
+                {% csrf_token %}
+				<div class="form-group">
+					{{form_tags.as_p}}
+				</div>
+				<button type="submit" class="btn btn-default">
+					Add tag
+				</button>
+			</form>
+            </fieldset>
+		</div>
+	</div>
+    {% endif %}
+</div>
+
+    <script src="{% static 'blog/js/jquery.min.js' %}"></script>
+    <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'blog/js/scripts.js' %}"></script>
+  </body>
+</html>
